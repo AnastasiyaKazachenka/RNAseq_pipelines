@@ -1,0 +1,34 @@
+Step 1.
+
+Run pipeline1_trimming_alignment.sh. Input file is *_1.fastq.gz
+
+Usage:
+sbatch $HOME/working/SCRIPTS/scripts/pipeline1/pipeline1_trimming_alignment.sh ./fastq/GEO531A1_1.fastq.gz
+parallel 'sbatch $HOME/working/SCRIPTS/scripts/pipeline1/pipeline1_trimming_alignment.sh {}' :::  ./fastq/*_1.fastq.gz
+
+Uses Trimmomatic for trimming Illumina paired-end adaptors
+Uses Hisat2 for alignment to hg38 human genome
+
+Output 6 folders in the working directory (if they didnt exist before):
+bam.files - your bam file
+fastQC - quality control files
+mapping ang trimmings.logs - info about trimming and alignment
+sam.files - should be empty
+trimmed.reads - trimmed fastq files
+
+
+Step 2.
+
+Use when all bam files for the project are generated
+Uses gencode v29 basic annoatation for genes and Dfam2 GRCh38.78 annotation for repeats
+
+Usage:
+sbatch $HOME/working/SCRIPTS/scripts/pipeline1/pipeline1_counting_reads.sh
+
+Output files with read counts:
+raw_TE.counts
+raw_gene.counts
+
+
+Step 3.
+Normalize read counts using DESeq2
